@@ -51,3 +51,5 @@ Outputs:
     Value: !Ref MyEC2Instance
 
 Tapso 
+Tapsodort
+Tapsowill
