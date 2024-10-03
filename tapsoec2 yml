@@ -49,3 +49,5 @@ Outputs:
   InstanceId:
     Description: "The instance ID"
     Value: !Ref MyEC2Instance
+
+Tapso 
