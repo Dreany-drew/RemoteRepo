@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: AWS CloudFormation template to create an EC2 instance.
+
+Resources:
+  MyEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: "t2.micro"   # Define the instance type
+      ImageId: "ami-0c55b159cbfafe1f0"  # Amazon Linux 2 AMI ID (change as needed)
+      KeyName: "my-key-pair"     # Replace with your own key pair
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup  # Reference to the security group
+      SubnetId: !Ref MySubnet    # Define the subnet (optional)
+
+  EC2SecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupDescription: "Enable SSH access and HTTP"
+      VpcId: !Ref MyVPC  # Specify VPC if needed
+      SecurityGroupIngress:
+        - IpProtocol: "tcp"
+          FromPort: 22
+          ToPort: 22
+          CidrIp: "0.0.0.0/0"   # Allow SSH from anywhere (use caution)
+        - IpProtocol: "tcp"
+          FromPort: 80
+          ToPort: 80
+          CidrIp: "0.0.0.0/0"   # Allow HTTP access
+
+  MyVPC:
+    Type: "AWS::EC2::VPC"
+    Properties:
+      CidrBlock: "10.0.0.0/16"
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: MyVPC
+
+  MySubnet:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      VpcId: !Ref MyVPC
+      CidrBlock: "10.0.1.0/24"
+      MapPublicIpOnLaunch: true
+      AvailabilityZone: !Select [0, !GetAZs ""]
+
+Outputs:
+  InstanceId:
+    Description: "The instance ID"
+    Value: !Ref MyEC2Instance
