@@ -51,6 +51,6 @@ Outputs:
     Value: !Ref MyEC2Instance
 
 Tapso 
-Tapsodort
+Tapso ne dort pas
 Tapsowil
 TAPSO & I did the homework on wednesday night 
